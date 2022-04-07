@@ -11,9 +11,9 @@ module.exports = () => {
 	const  googleRoute = require('./google/google');
 	router.use('/google', googleRoute());
 
-	router.get('/', (req, res) => {
-    	res.json({name:'signup'});
-	});
+	// router.get('/', (req, res) => {
+    // 	res.json({name:'signup'});
+	// });
 
 	const signupPost = require('./signup-post');
 	router.post( '/', async (req, res, next) =>  

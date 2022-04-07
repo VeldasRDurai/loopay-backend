@@ -11,10 +11,15 @@ const usersSchema = new mongoose.Schema ({
     },
     name : { type : String },
     hashedPassword  : { type : String },
+
     verifiedUser : { type : Boolean },
     hashedVerificationCode : { type : String },
-    hashedVerificationCodeExpiryDate : { type : Date },
+    verificationCodeExpiryDate : { type : Date },
 
+    refreshToken : { type : String },
+
+    googleAccount : { type : Boolean },
+    gotPersonalDetails : { type : Boolean },
 });
 
 module.exports = usersSchema ;
