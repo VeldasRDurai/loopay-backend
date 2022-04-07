@@ -14,5 +14,10 @@ module.exports = () => {
 	router.get('/', (req, res) => {
     	res.json({name:'signup'});
 	});
+
+	const signupPost = require('./signup-post');
+	router.post( '/', async (req, res, next) =>  
+		await signupPost(req, res, next) );
+
 	return router;
 }

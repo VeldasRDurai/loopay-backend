@@ -5,18 +5,25 @@
   "scripts": {
     "start": "node ./bin/www",
     "startDev": "nodemon ./bin/www",
-    "startDb" : "sudo service mongodb start",
+    "startDb": "sudo service mongodb start",
     "statusDb": "sudo service mongodb status",
-    "stopDb"  : "sudo service mongodb stop"
+    "stopDb": "sudo service mongodb stop",
+    "randomToken": "node && require('crypto').randomBytes(64).toString('hex')"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "googleapis": "^100.0.0",
     "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.10",
+    "morgan": "~1.9.1",
+    "nodemailer": "^6.7.3"
   },
   "devDependencies": {
+    "dotenv": "^16.0.0",
     "nodemon": "^2.0.15"
   }
 }
