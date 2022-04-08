@@ -3,8 +3,13 @@ var router = express.Router();
 
 module.exports = () => {
 
-	router.get('/', (req, res) => {
-    	res.json({name:'search'});
-	});
+	const authentication = require('../authentication/authentication');
+    router.use('/', async (req, res, next) =>
+        authentication(req, res, next));
+
+	const searchPost = require('./search-post');
+	router.post( '/', async (req, res, next) =>  
+		await searchPost(req, res, next) );
+
 	return router;
 }
