@@ -8,9 +8,9 @@ module.exports = () => {
     router.use('/', async (req, res, next) =>
         authentication(req, res, next));
 
-    router.get('/', async (req, res, next) => {
-        res.json({name:'Veldas R Durai', email:req.email});
-    });
+    const rootGet = require('./root-get');
+	router.get( '/', async (req, res, next) =>  
+		await rootGet(req, res, next) );
 
 	return router;
 }
