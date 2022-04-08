@@ -1,24 +1,23 @@
 const bcrypt  = require('bcryptjs');
-// const jwt     = require("jsonwebtoken");
 
 const { 
     accessTokenGenerator, 
     refreshTokenGenerator
-} = require('../../../functions/tokenGenerator');
-const { users } = require('../../../database/database');
+} = require('../../../../functions/tokenGenerator');
+const { users } = require('../../../../database/database');
 
 const verificationPost = async ( req, res, next ) => {
     try {
         const { email, otp } = req.body;
-        const user = await users.findOne({ 'email': email });	
+        const user = await users.findOne({ 'email': email });
         // 1.
-        if( user === null ){
-            res.status(401).send("No such users");
+        if( user === null || !user.verifiedUser ){
+            res.status(401).send("No such email address");
             return;
         }
         // 2.
-        if( user.verifiedUser ){
-            res.status(401).send("EMAIL ALREADY EXIST");
+        if( user.googleAccount ){
+            res.status(401).send("Google Account");
             return;
         }
         // 3.
@@ -36,10 +35,7 @@ const verificationPost = async ( req, res, next ) => {
         const accessToken  = accessTokenGenerator( email );
         const refreshToken = refreshTokenGenerator( email );
         await users.updateOne({'email':email},{
-            'verifiedUser':true,
-            'refreshToken':refreshToken,
-            'googleAccount':false,
-            'gotPersonalDetails':false
+            'refreshToken':refreshToken
         });
         res.cookie("accessToken", accessToken, { 
             path:"/",  

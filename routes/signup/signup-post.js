@@ -4,7 +4,7 @@ const bcrypt  = require('bcryptjs');
 
 const { users } = require('../../database/database');
 const { nMinutesLater } = require('../../functions/nTimeLater');
-// const sendMail = require('../../functions/sendMail');
+// const userVerificationMail = require('../../functions/mail/userVerificationMail');
 
 const signupPost = async ( req, res, next ) => {
     try{
@@ -21,13 +21,8 @@ const signupPost = async ( req, res, next ) => {
         // 2.
         // Sending verification code to given mail id and
         // May of may not able to send error
-        // const {
-        //     messageSent,
-        //     error,
-        //     verificationCode
-        // } = await sendMail( email );
-        // if( !messageSent ){
-        //     console.log( error );
+        // const verificationCode  = Math.floor( (Math.random() * 999999) + 1 );
+        // if( !await userVerificationMail({email,verificationCode}) ){
         //     res.status(500).send("Not able to send email.Internal server error");
         //     return;
         // }

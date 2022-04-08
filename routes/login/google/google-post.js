@@ -12,8 +12,13 @@ const googlePost = async ( req, res, next ) => {
         const { email } = await verify(token); 
         const user = await users.findOne({ 'email': email });
         // 1.
-        if(user !== null ){
-            res.status(401).send("EMAIL ALREADY EXIST");
+        if( user === null || !user.verifiedUser ){
+            res.status(401).send("No such email address");
+            return;
+        }
+        // 2.
+        if( !user.googleAccount ){
+            res.status(401).send("not a Google Account");
             return;
         }
 
@@ -21,11 +26,7 @@ const googlePost = async ( req, res, next ) => {
         const refreshToken = refreshTokenGenerator( email );
 
         await users({
-            'email': email,
-            'verifiedUser': true,
-            'refreshToken': refreshToken,
-            'googleAccount': true,
-            'gotPersonalDetails': false
+            'refreshToken': refreshToken
         }).save();
         res.cookie("accessToken", accessToken, { 
             path:"/",  
@@ -36,7 +37,9 @@ const googlePost = async ( req, res, next ) => {
             path:"/",  
             httpOnly:true 
         });
-        res.status(200).send("SUCCESS");
+        res.status(200).json({
+            gotPersonalDetails: user.gotPersonalDetails
+        });
         return;
     } catch(e){
         console.log(e);

@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 module.exports = () => {
+	
+	const personalDetailsPost = require('./personal-details-post');
+	router.post( '/', async (req, res, next) =>  
+		await personalDetailsPost(req, res, next) );
 
-	router.get('/', (req, res) => {
-    	res.json({name:'personal-details'});
-	});
 	return router;
 }

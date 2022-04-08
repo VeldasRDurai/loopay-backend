@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 module.exports = () => {
-
-	router.get('/', (req, res) => {
-    	res.json({name:'google'});
-	});
+	const googlePost = require('./google-post');
+	router.post( '/', async (req, res, next) =>  
+		await googlePost(req, res, next) );
 	return router;
 }

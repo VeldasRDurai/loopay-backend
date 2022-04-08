@@ -3,8 +3,8 @@ var router = express.Router();
 
 module.exports = () => {
 
-	router.get('/', (req, res) => {
-    	res.json({name:'verification'});
-	});
+	const passwordPost = require('./password-post');
+	router.post( '/', async (req, res, next) =>  
+		await passwordPost(req, res, next) );
 	return router;
 }

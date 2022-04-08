@@ -4,22 +4,22 @@ const { users } = require('../../../database/database');
 const { nMinutesLater } = require('../../../functions/nTimeLater');
 const userVerificationMail = require('../../../functions/mail/userVerificationMail');
 
-const resendPost = async ( req, res, next ) => {
+const passwordPost = async ( req, res, next ) => {
     try{
+        console.log('Login Post');
         const { email } = req.body;
         const user = await users.findOne({ 'email': email });
-		// 1.
-		if( user !== null ){
-			res.status(401).send("No such users");
-			return;
-		}
-		// 2.
-		if( user.verifiedUser ){
-			res.status(401).send("EMAIL ALREADY EXIST");
-			return;
-		}
-		// 3.
-
+        // 1.
+        if( user === null || !user.verifiedUser ){
+            res.status(401).send("No such email address");
+            return;
+        }
+        // 2.
+        if( user.googleAccount ){
+            res.status(401).send("Google Account");
+            return;
+        }
+        // 3.
         const verificationCode  = Math.floor( (Math.random() * 999999) + 1 );
         if( !await userVerificationMail({email,verificationCode}) ){
             res.status(500).send("Not able to send email.Internal server error");
@@ -41,4 +41,4 @@ const resendPost = async ( req, res, next ) => {
     }
 }
 
-module.exports = resendPost;
+module.exports = passwordPost;

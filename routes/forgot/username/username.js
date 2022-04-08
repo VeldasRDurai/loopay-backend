@@ -3,8 +3,9 @@ var router = express.Router();
 
 module.exports = () => {
 
-	router.get('/', (req, res) => {
-    	res.json({name:'username'});
-	});
+	const usernamePost = require('./username-post');
+	router.post( '/', async (req, res, next) =>  
+		await usernamePost(req, res, next) );
+
 	return router;
 }

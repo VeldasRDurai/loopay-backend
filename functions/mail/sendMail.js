@@ -5,7 +5,6 @@
 const nodemailer = require("nodemailer");
 const { google } = require('googleapis');
 
-
 const oAuth2Client = new google.auth.OAuth2( 
     process.env.CLIENT_ID, 
     process.env.CLIENT_SECRET, 
@@ -15,10 +14,8 @@ oAuth2Client.setCredentials( {
     refresh_token: process.env.REFRESH_TOKEN 
 });
 
-
-const sendMail = async ( toEmailAddress ) => {
+const sendMail = async ( mailOptions ) => {
     try {
-        const verificationCode  = Math.floor( (Math.random() * 999999) + 1 );
         const googleAccessToken = await oAuth2Client.getAccessToken();
         let transporter = nodemailer.createTransport({
             service: 'gmail' ,
@@ -38,26 +35,13 @@ const sendMail = async ( toEmailAddress ) => {
                 rejectUnAuthorized:true
             }
         });
-        let info = await transporter.sendMail({
-            from: "Loopay Application " + process.env.EMAIL ,
-            to  :  toEmailAddress , 
-            subject: "User Verifictaion" ,
-            text: "Your user verifiction code for Loopay Application is : " + verificationCode 
-        });
+        let info = await transporter.sendMail( mailOptions );
         console.log("Message sent : ", info.messageId);
 
-        return {
-            messageSent : true,
-            error: undefined,
-            verificationCode
-        }
+        return true;
     } catch(error) {
         console.log( "Message not sent : ",error );
-        return {
-            messageSent : false,
-            error,
-            verificationCode: undefined
-        }
+        return false;
     }
 }
 

@@ -23,3 +23,14 @@ const usersSchema = new mongoose.Schema ({
 });
 
 module.exports = usersSchema ;
+
+// email : 
+// username  : 
+// name : 
+// hashedPassword  : 
+// verifiedUser : 
+// hashedVerificationCode :
+// verificationCodeExpiryDate : 
+// refreshToken :
+// googleAccount : 
+// gotPersonalDetails : 
