@@ -3,8 +3,11 @@ var router = express.Router();
 
 module.exports = () => {
 
-	const passwordPost = require('./password-post');
+	const newRoute = require('./new/new');
+	router.use('/new', newRoute());
+
+	const verificationPost = require('./verification-post');
 	router.post( '/', async (req, res, next) =>  
-		await passwordPost(req, res, next) );
+		await verificationPost(req, res, next) );
 	return router;
 }

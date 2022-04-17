@@ -14,7 +14,10 @@ const signupPost = async ( req, res, next ) => {
         // There is user with the given mail id and
         // that user has verified his mail id
         if( user !== null && user.verifiedUser ){
-            res.status(401).send("EMAIL ALREADY EXIST");
+            res.status(401).json({
+                errorNo : 1,
+                errorMessage : 'Email Already Exist'
+            });
             return;
         }
 
@@ -23,7 +26,10 @@ const signupPost = async ( req, res, next ) => {
         // May of may not able to send error
         // const verificationCode  = Math.floor( (Math.random() * 999999) + 1 );
         // if( !await userVerificationMail({email,verificationCode}) ){
-        //     res.status(500).send("Not able to send email.Internal server error");
+            // res.status(500).json({
+            //     errorNo : 2,
+            //     errorMessage : 'Not able to send email'
+            // });
         //     return;
         // }
 
@@ -56,11 +62,16 @@ const signupPost = async ( req, res, next ) => {
                 'verificationCodeExpiryDate': nMinutesLater(5)
             });
         }
-        res.status(200).send("SUCCESS");
+        res.status(200).json({
+            email
+        });
         return;
     } catch(e){
         console.log(e);
-        res.status(500).send("Internal server error"); 
+        res.status(500).json({
+            errorNo : 0,
+            errorMessage : 'Internal server error'
+        }); 
         return;
     }
 }
