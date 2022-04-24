@@ -10,11 +10,14 @@ const newPost = async ( req, res, next ) => {
         await users.updateOne({ 'email': req.email },{
             'hashedPassword': hashedPassword
         });
-        res.status(200).send("SUCCESS");
+        res.status(200).json({});
         return;
     } catch(e){
         console.log(e);
-        res.status(500).send("Internal server error"); 
+        res.status(500).json({
+            errorNo : 0,
+            errorMessage : 'Internal server error'
+        }); 
         return;
     }
 };

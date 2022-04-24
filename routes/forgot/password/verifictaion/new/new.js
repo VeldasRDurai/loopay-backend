@@ -3,8 +3,9 @@ var router = express.Router();
 
 module.exports = () => {
 
-	const authenticationRoute  = require('../../../../authentication/authentication');
-	router.use('/', authenticationRoute());
+	const authentication  = require('../../../../authentication/authentication');
+	router.use('/', async (req, res, next) =>
+		authentication(req, res, next));
 
 	const newPost = require('./new-post');
 	router.post( '/', async (req, res, next) =>  

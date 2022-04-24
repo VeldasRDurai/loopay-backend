@@ -9,6 +9,9 @@ module.exports = () => {
 	const loginRoute = require('./login/login');
 	router.use('/login', loginRoute());
 
+	const forgotRoute = require('./forgot/forgot');
+	router.use('/forgot', forgotRoute());
+
 	const searchRoute = require('./search/search');
 	router.use('/search', searchRoute());
 

@@ -8,26 +8,38 @@ const { users } = require('../../../../database/database');
 
 const verificationPost = async ( req, res, next ) => {
     try {
-        const { email, otp } = req.body;
+        const { email, verificationCode } = req.body;
         const user = await users.findOne({ 'email': email });
         // 1.
         if( user === null || !user.verifiedUser ){
-            res.status(401).send("No such email address");
+            res.status(401).json({
+                errorNo : 1,
+                errorMessage : 'No such users exist'
+            });
             return;
         }
         // 2.
         if( user.googleAccount ){
-            res.status(401).send("Google Account");
+            res.status(401).json({
+                errorNo : 2,
+                errorMessage : 'Google Account'
+            });
             return;
         }
         // 3.
         if( new Date(user.verificationCodeExpiryDate) < new Date()  ){
-            res.status(401).send("Token Expired");
+            res.status(401).json({
+                errorNo : 3,
+                errorMessage : 'Token Expired'
+            });
             return;
         }
         // 4.
-        if( ! await bcrypt.compare(otp, user.hashedVerificationCode ) ){
-            res.status(401).send("Tokens are not same");
+        if( ! await bcrypt.compare( String(verificationCode), user.hashedVerificationCode ) ){
+            res.status(401).json({
+                errorNo : 4,
+                errorMessage : 'Invalid token'
+            });
             return;
         }
 
@@ -46,11 +58,14 @@ const verificationPost = async ( req, res, next ) => {
             path:"/",  
             httpOnly:true 
         });
-        res.status(200).send("SUCCESS");
+        res.status(200).json({});
         return;
     } catch(e){
         console.log(e);
-        res.status(500).send("Internal server error"); 
+        res.status(500).json({
+            errorNo : 0,
+            errorMessage : 'Internal server error'
+        }); 
         return;
     }
 };

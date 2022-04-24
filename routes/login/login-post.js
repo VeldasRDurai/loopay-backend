@@ -12,15 +12,24 @@ const loginPost = async ( req, res, next ) => {
         const { email, password } = req.body;
         const user = await users.findOne({ 'email': email });
         if( user === null || !user.verifiedUser ){
-            res.status(401).send("No such email address");
+            res.status(401).json({
+                errorNo : 1,
+                errorMessage : 'No such users exist'
+            });
             return;
         }
         if( user.googleAccount ){
-            res.status(401).send("Google Account");
+            res.status(401).json({
+                errorNo : 2,
+                errorMessage : 'Google Account'
+            });
             return;
         }
         if( !await bcrypt.compare(password, user.hashedPassword )){
-            res.status(401).send("Wrong Password");
+            res.status(401).json({
+                errorNo : 3,
+                errorMessage : 'Wrong password'
+            });
             return;
         }
 
@@ -39,12 +48,16 @@ const loginPost = async ( req, res, next ) => {
             httpOnly:true 
         });
         res.status(200).json({
+            email,
             gotPersonalDetails: user.gotPersonalDetails
         });
         return;
     } catch(e){
         console.log(e);
-        res.status(500).send("Internal server error"); 
+        res.status(500).json({
+            errorNo : 0,
+            errorMessage : 'Internal server error'
+        }); 
         return;
     }
 }
