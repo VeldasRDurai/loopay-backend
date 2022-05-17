@@ -1,28 +1,53 @@
 const mongoose = require("mongoose");
 
 const usersSchema = new mongoose.Schema ({
-    email : { 
-        type : String,
-        // unique: true  
+    email : String,
+    // username  : String,
+    // name : String,
+    // hashedPassword  : String,
+
+    // verifiedUser : Boolean,
+    // hashedVerificationCode : String,
+    // verificationCodeExpiryDate : Date,
+
+    // refreshToken : String,
+
+    // googleAccount : Boolean,
+    // gotPersonalDetails : Boolean,
+
+    lookingForPartner : Boolean,
+    amount : Number,
+    isSoftCash : Boolean,
+    radius : Number,
+
+    searches : [{
+        amount : Number,
+        isSoftCash : Boolean,
+        radius : Number,
+    }],
+    transactions : [{
+        parnerID: String
+    }],
+
+    isOnline : Boolean,
+    lastseen : Date,
+
+    location: {
+        type: {
+            type: String,
+            default: 'Point',
+        },
+        coordinates: {
+            type: [Number]
+        }
     },
-    username  : { 
-        type : String,
-        // unique: true  
-    },
-    name : { type : String },
-    hashedPassword  : { type : String },
-
-    verifiedUser : { type : Boolean },
-    hashedVerificationCode : { type : String },
-    verificationCodeExpiryDate : { type : Date },
-
-    refreshToken : { type : String },
-
-    googleAccount : { type : Boolean },
-    gotPersonalDetails : { type : Boolean },
 });
 
 module.exports = usersSchema ;
+
+// REFERENCE
+// 1. https://www.mongodb.com/docs/manual/reference/operator/query/center/#example
+// 2. https://stackoverflow.com/a/61510540/14476642
 
 // email : 
 // username  : 
