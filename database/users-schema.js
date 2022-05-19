@@ -16,20 +16,25 @@ const usersSchema = new mongoose.Schema ({
     // gotPersonalDetails : Boolean,
 
     lookingForPartner : Boolean,
-    amount : Number,
-    isSoftCash : Boolean,
-    radius : Number,
-
+    lookingForPartnerUntil : Date,
+    lastSearch : {
+        amount : Number,
+        isSoftCash : Boolean,
+        radius : Number,
+        timeStamp: Date
+    },
     searches : [{
         amount : Number,
         isSoftCash : Boolean,
         radius : Number,
+        timeStamp: Date
     }],
     transactions : [{
         parnerID: String
     }],
 
     isOnline : Boolean,
+    socketId : String,
     lastseen : Date,
 
     location: {
