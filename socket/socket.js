@@ -10,7 +10,7 @@ module.exports = io => {
         // const includeSocketInPara = (funct, data) => 
         //     funct({ data, socket });
         const repitionReducer = (event, funct) =>
-            socket.on(event, data => funct({ data, socket }))
+            socket.on(event, data => funct({ ...data, socket }))
 
         socket.emit('connected');
         

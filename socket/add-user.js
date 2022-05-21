@@ -1,17 +1,17 @@
 const { users } = require('../database/database');
 
-const addUser = async ({ data, socket }) => {
+const addUser = async ({ email, socket }) => {
     try{
-        console.log( data );
-        const user = await users.findOne({ 'email':data.email });
+        console.log( email );
+        const user = await users.findOne({ 'email':email });
         if( user === null ){
             await users({ 
-                'email': data.email,
+                'email': email,
                 'isOnline': true,
                 'socketId': socket.id
             }).save();
         } else {
-            await users.updateOne({ 'email':data.email },{
+            await users.updateOne({ 'email':email },{
                 'isOnline':true,
                 'socketId': socket.id
             });

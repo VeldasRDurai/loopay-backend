@@ -1,7 +1,7 @@
 const { users } = require('../database/database');
 
 const transactionSearch = async (
-        { data: { amount, isSoftCash, radius, email }, socket }) => {
+        { amount, isSoftCash, radius, email, socket }) => {
 
     try{
         console.log( 'transaction-search = ', { amount, isSoftCash, radius, email } );
