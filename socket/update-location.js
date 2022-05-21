@@ -7,7 +7,7 @@ const updateLocation = async ({ data, socket }) => {
         if( user===null ) return;
 
         await users.updateOne({'email':data.email}, {
-            $set : { 
+            "$set" : { 
                 'location.coordinates': [ data.longitude, data.latitude, ] }
         });
         

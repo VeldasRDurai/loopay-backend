@@ -1,14 +1,66 @@
-const { users } = require('../database/database');
+const mongoose = require("mongoose");
+const { users, transactions } = require('../database/database');
+const { REQUEST_SEND } = require('../database/requestStateTypes');
 
-const sendRequest = async ({ email, selectedUserDetails, requestTimerExpiesOn, socket }) => {
+const sendRequest = async ({ 
+    requestFrom, 
+    requestTo, 
+    requestTimerStartsOn, 
+    requestTimerExpiesOn, 
+    searchDetails,
+    socket 
+}) => {
     try{
-        const sendUser = await users.findOne({ 'email': selectedUserDetails.email });
-        if( sendUser.isOnline ){
-            socket.broadcast.to(sendUser.socketId).
-                emit('receive-request',{ requestFrom: email });
+        const requestToUser = await users.findOne({ 'email': requestTo });
+        if( requestToUser.isOnline ){
+            socket.broadcast.to(requestToUser.socketId).
+                emit('receive-request',{ requestFrom });
         } else {
             // PUSH NOTIFICTAION
         }
+
+        const transactionNo = new mongoose.Types.ObjectId();
+        await users.updateOne({'email': requestFrom},{
+            "$push": { 
+                'transactions'  : transactionNo
+                // { 
+                //     transactionNo,
+                //     searchDetails,
+                //     requestFrom, 
+                //     requestTo, 
+                //     requestTimerStartsOn, 
+                //     requestTimerExpiesOn,
+                //     requestState : REQUEST_SEND,
+                // } 
+            },
+            'currentTransaction': transactionNo
+        });
+        await users.updateOne({'email': requestTo},{
+            "$push": { 
+                'transactions'  : transactionNo
+                // { 
+                    // transactionNo,
+                    // searchDetails,
+                    // requestFrom, 
+                    // requestTo, 
+                    // requestTimerStartsOn, 
+                    // requestTimerExpiesOn,
+                    // requestState : REQUEST_SEND,
+                // } 
+            },
+            'currentTransaction': transactionNo
+        });
+
+        await transactions({
+            transactionNo,
+            searchDetails,
+            requestFrom, 
+            requestTo, 
+            requestTimerStartsOn, 
+            requestTimerExpiesOn,
+            requestState : REQUEST_SEND,
+            requestStateOn : requestTimerStartsOn
+        }).save();
     } catch(e){
         console.log(e);
     }

@@ -1,17 +1,44 @@
-const { users } = require('../database/database');
+const { users, transactions } = require("../database/database");
 
-const sendRequest = async ({ email, selectedUserDetails, socket }) => {
+const { REQUEST_CANCEL } = require('../database/requestStateTypes');
+
+const cancelRequest = async ({   
+    requestFrom , 
+    // requestTo,
+    // socket 
+}) => {
     try{
-        const sendUser = await users.findOne({ 'email': selectedUserDetails.email });
-        if( sendUser.isOnline ){
-            socket.broadcast.to(sendUser.socketId).
-                emit('receive-request',{ requestFrom: email });
-        } else {
-            // PUSH NOTIFICTAION
-        }
+        const requestFromUser = await users.findOne({ 'email': requestFrom });
+        // await users.updateOne({
+        //     'email': requestFrom, 
+        //     'transactions.transactionNo': requestFromUser.currentTransaction
+        // },{
+        //     "$set": { 
+        //         'transactions.$.requestState'  : REQUEST_CANCEL,
+        //         'transactions.$.requestStateOn': new Date()
+        //     }
+        // });
+        // await users.updateOne({
+        //     'email': requestTo, 
+        //     'transactions.transactionNo': requestFromUser.currentTransaction
+        // },{
+        //     "$set": { 
+        //         'transactions.$.requestState'  : REQUEST_CANCEL,
+        //         'transactions.$.requestStateOn': new Date()
+        //     }
+        // });
+        await transactions.updateOne({'transactionNo':requestFromUser.currentTransaction},{
+            requestState: REQUEST_CANCEL,
+            requestStateOn: new Date(),
+        })
+
     } catch(e){
         console.log(e);
     }
 }
 
-module.exports = sendRequest;
+module.exports = cancelRequest;
+
+// REFERENCE
+
+// 1. https://stackoverflow.com/a/42777522/14476642
