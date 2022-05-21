@@ -5,7 +5,7 @@ const { REQUEST_CANCEL } = require('../database/requestStateTypes');
 const cancelRequest = async ({   
     requestFrom , 
     // requestTo,
-    // socket 
+    socket 
 }) => {
     try{
         const requestFromUser = await users.findOne({ 'email': requestFrom });
@@ -31,6 +31,7 @@ const cancelRequest = async ({
             requestState: REQUEST_CANCEL,
             requestStateOn: new Date(),
         })
+        socket.emit('cancel-request-acknowledge',{ acknowledge: true });
 
     } catch(e){
         console.log(e);
