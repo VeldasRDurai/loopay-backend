@@ -19,14 +19,16 @@ const transactionSearch = async (
 
 
         // 
-        const user1 = await users.findOne({'email':email});
-        console.log( "Requester = ",user1 );
-        const user2 = await users.find({
-            'location.coordinates' : {
-                $geoWithin: { $center: [ user1.location.coordinates , radius ] } 
-            }
-        });
-        console.log('transaction-search-result = ' , user2 );
+        // const user1 = await users.findOne({'email':email});
+        // console.log( "Requester = ",user1 );
+        // const user2 = await users.find({
+        //     'location.coordinates' : {
+        //         $geoWithin: { $center: [ user1.location.coordinates , radius ] } 
+        //     }
+        // });
+
+        const user2 = await users.find();
+        // console.log('transaction-search-result = ' , user2 );
         socket.emit('transaction-search-result' , user2 );
     } catch(e){
         console.log(e);

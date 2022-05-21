@@ -2,6 +2,9 @@ const transactionSearch = require('./transcation-search');
 const updateLocation = require('./update-location');
 const addUser = require('./add-user');
 const sendRequest = require('./sent-request');
+const cancelRequest = require('./cancel-request');
+const receiveRequestAccepted = require('./receive-request-accepted');
+const receiveRequestRejected = require('./receive-request-rejected');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -24,9 +27,12 @@ module.exports = io => {
         //     data => includeSocketInPara(updateLocation, data));
 
         repitionReducer('add-user', addUser);
+        repitionReducer('cancel-request',cancelRequest);
+        repitionReducer('receive-request-accepted',receiveRequestAccepted);
+        repitionReducer('receive-request-rejected',receiveRequestRejected);
+        repitionReducer('send-request', sendRequest);
         repitionReducer('transaction-search', transactionSearch);
         repitionReducer('update-location', updateLocation);
-        repitionReducer('send-request', sendRequest);
         
     });
 }

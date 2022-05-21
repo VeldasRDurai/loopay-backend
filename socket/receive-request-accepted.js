@@ -9,6 +9,10 @@ const {
 
 const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
     try{
+        console.log('receiveRequestAccepted : ',{ 
+            requestTo, 
+            requestFrom
+        });
         const requestToUser = await users.findOne({'email':requestTo})
         const currentTransaction = await transactions.findOne({ 
             'transactionNo': requestToUser.currentTransaction 

@@ -51,6 +51,7 @@ const sendRequest = async ({
             'currentTransaction': transactionNo
         });
 
+        console.log( REQUEST_SEND );
         await transactions({
             transactionNo,
             searchDetails,
