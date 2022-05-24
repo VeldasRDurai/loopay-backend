@@ -5,7 +5,7 @@ const usersSchema = new mongoose.Schema ({
     // username  : String,
     // name : String,
     // hashedPassword  : String,
-
+    
     // verifiedUser : Boolean,
     // hashedVerificationCode : String,
     // verificationCodeExpiryDate : Date,
@@ -14,9 +14,12 @@ const usersSchema = new mongoose.Schema ({
 
     // googleAccount : Boolean,
     // gotPersonalDetails : Boolean,
+    isOnline : Boolean,
+    socketId : String,
+    lastseen : Date,
+    
+    currentMode : String,
 
-    lookingForPartner : Boolean,
-    lookingForPartnerUntil : Date,
     lastSearch : {
         amount : Number,
         isSoftCash : Boolean,
@@ -29,6 +32,13 @@ const usersSchema = new mongoose.Schema ({
         radius : Number,
         timeStamp: Date
     }],
+    
+    lastSearchSaved : Boolean,
+    lastSearchUpto : Date,
+
+    requestFrom : String,
+    requestFromUpto : Date,
+    
     currentTransaction : mongoose.ObjectId,
     transactions : [ mongoose.ObjectId ],
     // [{
@@ -50,9 +60,6 @@ const usersSchema = new mongoose.Schema ({
     //     requestStateOn : Date,
     // }],
 
-    isOnline : Boolean,
-    socketId : String,
-    lastseen : Date,
 
     location: {
         type: {

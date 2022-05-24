@@ -29,7 +29,7 @@ const transactionSearch = async (
 
         const user2 = await users.find();
         // console.log('transaction-search-result = ' , user2 );
-        socket.emit('transaction-search-result' , user2 );
+        socket.emit('transaction-search-result' , { lastSearchResults: user2 });
     } catch(e){
         console.log(e);
     }

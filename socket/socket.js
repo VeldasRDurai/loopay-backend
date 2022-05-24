@@ -5,6 +5,8 @@ const sendRequest = require('./sent-request');
 const cancelRequest = require('./cancel-request');
 const receiveRequestAccepted = require('./receive-request-accepted');
 const receiveRequestRejected = require('./receive-request-rejected');
+const saveSearch = require('./save-search');
+const saveSearchDelete = require('./save-search-delete');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -33,6 +35,7 @@ module.exports = io => {
         repitionReducer('send-request', sendRequest);
         repitionReducer('transaction-search', transactionSearch);
         repitionReducer('update-location', updateLocation);
-        
+        repitionReducer('save-search', saveSearch);
+        repitionReducer('save-search-delete', saveSearchDelete);
     });
 }

@@ -3,37 +3,18 @@ const { users, transactions } = require("../database/database");
 const { REQUEST_CANCEL } = require('../database/requestStateTypes');
 
 const cancelRequest = async ({   
-    requestFrom , 
-    // requestTo,
+    requestFrom,
     socket 
 }) => {
     try{
         const requestFromUser = await users.findOne({ 'email': requestFrom });
-        // await users.updateOne({
-        //     'email': requestFrom, 
-        //     'transactions.transactionNo': requestFromUser.currentTransaction
-        // },{
-        //     "$set": { 
-        //         'transactions.$.requestState'  : REQUEST_CANCEL,
-        //         'transactions.$.requestStateOn': new Date()
-        //     }
-        // });
-        // await users.updateOne({
-        //     'email': requestTo, 
-        //     'transactions.transactionNo': requestFromUser.currentTransaction
-        // },{
-        //     "$set": { 
-        //         'transactions.$.requestState'  : REQUEST_CANCEL,
-        //         'transactions.$.requestStateOn': new Date()
-        //     }
-        // });
         await transactions.updateOne({'transactionNo':requestFromUser.currentTransaction},{
             requestState: REQUEST_CANCEL,
             requestStateOn: new Date(),
         })
         socket.emit('cancel-request-acknowledge',{ acknowledge: true });
-
     } catch(e){
+        socket.emit('cancel-request-acknowledge',{ acknowledge: false });
         console.log(e);
     }
 }
