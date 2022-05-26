@@ -17,6 +17,8 @@ const transactionsSchema = new mongoose.Schema ({
     
     requestState : String,
     requestStateOn : Date,
+
+    transactionEndTime : Date,
 });
 
 module.exports = transactionsSchema ;

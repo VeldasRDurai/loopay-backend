@@ -13,17 +13,22 @@ const saveSearch = async ({
             email,
             duration 
         });
+        const lastSearchUpto = new Date( Number(new Date()) + ( duration*60*60*1000 ) )
         await users.updateOne({'email':email},{
             'lastSearchSaved' : true,
-            'lastSearchUpto' : new Date( Number(new Date()) + ( duration*60*1000 ) ),
+            'lastSearchUpto' : lastSearchUpto,
             'currentMode': MAINPAGE_SAVED_MODE
         })
         socket.emit('save-search-acknowledge', {
-            acknowledge: true
+            acknowledge: true,
+            lastSearchSaved:true,
+            lastSearchUpto
         });
     } catch(e){
         socket.emit('save-search-acknowledge', {
-            acknowledge: false
+            acknowledge: false,
+            lastSearchSaved:false,
+            lastSearchUpto:new Date()
         });
         console.log(e);
     }

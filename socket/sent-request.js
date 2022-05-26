@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const { users, transactions } = require('../database/database');
 const { REQUEST_SEND } = require('../database/requestStateTypes');
-const { MAINPAGE_TRANSACTION_MODE } = require('../database/currentModeTypes');
+const { MAINPAGE_SEARCH_MODE } = require('../database/currentModeTypes');
 
 const sendRequest = async ({ 
     requestFrom, 
     requestTo, 
-    requestTimerStartsOn, 
+    requestTimerStartsOn,
     requestTimerExpiesOn, 
     searchDetails,
     socket 
@@ -24,12 +24,12 @@ const sendRequest = async ({
         await users.updateOne({'email': requestFrom},{
             "$push": { 'transactions'  : transactionNo },
             'currentTransaction': transactionNo,
-            'currentMode': MAINPAGE_TRANSACTION_MODE
+            'currentMode': MAINPAGE_SEARCH_MODE
         });
         await users.updateOne({'email': requestTo},{
             "$push": { 'transactions'  : transactionNo },
             'currentTransaction': transactionNo,
-            'currentMode': MAINPAGE_TRANSACTION_MODE,
+            'currentMode': MAINPAGE_SEARCH_MODE,
             'requestFrom': requestFrom,
             'requestFromUpto': requestTimerExpiesOn
         });

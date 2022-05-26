@@ -7,8 +7,7 @@ const saveSearchDelete = async ({
 }) => {
     try{
         console.log('save-search-delete : ',{ 
-            email,
-            duration 
+            email
         });
         await users.updateOne({'email':email},{
             'lastSearchSaved' : false,

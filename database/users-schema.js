@@ -41,25 +41,8 @@ const usersSchema = new mongoose.Schema ({
     
     currentTransaction : mongoose.ObjectId,
     transactions : [ mongoose.ObjectId ],
-    // [{
-    //     transactionNo : mongoose.ObjectId,
-    //     searchDetails : {
-    //         amount : Number,
-    //         isSoftCash : Boolean,
-    //         radius : Number,
-    //         timeStamp: Date
-    //     },
 
-    //     requestFrom : String,
-    //     requestTo  : String,
-
-    //     requestTimerStartsOn : Date,
-    //     requestTimerExpiesOn : Date,
-
-    //     requestState : String,
-    //     requestStateOn : Date,
-    // }],
-
+    // transactionEndTime: Date,
 
     location: {
         type: {

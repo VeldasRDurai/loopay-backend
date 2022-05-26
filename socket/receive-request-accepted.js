@@ -24,18 +24,24 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
             });
             return;
         }
+        const transactionEndTime = new Date() + (currentTransaction.searchDetails.radius * 1000 * 60 *5);
         await transactions.updateOne({'transactionNo':currentTransaction.transactionNo},{
-            requestState : REQUEST_ACCEPTED,
-            requestStateOn : new Date()
+            'requestState' : REQUEST_ACCEPTED,
+            'requestStateOn' : new Date(),
+            'transactionEndTime': transactionEndTime
         });
         socket.emit('receive-request-accepted-acknowledge', {
-            acknowledge: true
+            acknowledge: true,
+            transactionEndTime
         });
         const requestFromUser = await users.findOne({'email':requestFrom})
         // CHEACK IS ONLINE
         // if(requestFromUser.isOnline){}
         socket.broadcast.to(requestFromUser.socketId).
-            emit('sent-request-acknowledge',{ acknowledge: true });
+            emit('sent-request-acknowledge',{ 
+                acknowledge: true,
+                transactionEndTime
+            });
     } catch(e){
         console.log(e);
     }
