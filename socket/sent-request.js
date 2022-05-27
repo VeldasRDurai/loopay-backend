@@ -13,6 +13,8 @@ const sendRequest = async ({
 }) => {
     try{
         const requestToUser = await users.findOne({ 'email': requestTo });
+        const transactionNo = new mongoose.Types.ObjectId();
+        
         if( requestToUser.isOnline ){
             socket.broadcast.to(requestToUser.socketId).
                 emit('receive-request',{ requestFrom, requestTimerExpiesOn });
@@ -20,7 +22,6 @@ const sendRequest = async ({
             // PUSH NOTIFICTAION
         }
 
-        const transactionNo = new mongoose.Types.ObjectId();
         await users.updateOne({'email': requestFrom},{
             "$push": { 'transactions'  : transactionNo },
             'currentTransaction': transactionNo,

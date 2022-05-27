@@ -26,33 +26,42 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
             });
             return;
         }
-        console.log('receiveRequestAccepted : ', currentTransaction.searchDetails.radius );
+        
         const transactionEndTime = new Date( 
             Number( new Date() ) + Math.floor( currentTransaction.searchDetails.radius/100 * 1000 * 60 *5 ) );
         await transactions.updateOne({'transactionNo':currentTransaction.transactionNo},{
             'requestState' : REQUEST_ACCEPTED,
             'requestStateOn' : new Date(),
+            'transactionActivated':true,
             'transactionEndTime': transactionEndTime
         });
-        socket.emit('receive-request-accepted-acknowledge', {
-            acknowledge: true,
-            transactionEndTime
-        });
+
         const requestFromUser = await users.findOne({'email':requestFrom})
         // CHEACK IS ONLINE
         // if(requestFromUser.isOnline){}
         await users.updateOne({'email': requestTo},{
             'currentMode': MAINPAGE_TRANSACTION_MODE,
+            'transactionActivated':true,
             'transactionEndTime': transactionEndTime
         });
         await users.updateOne({'email': requestFrom},{
             'currentMode': MAINPAGE_TRANSACTION_MODE,
+            'transactionActivated':true,
             'transactionEndTime':transactionEndTime
         })
+        
+        socket.emit('receive-request-accepted-acknowledge', {
+            acknowledge: true,
+            transactionActivated:true,
+            transactionEndTime,
+            currentTransaction: requestToUser.currentTransaction
+        });
         socket.broadcast.to(requestFromUser.socketId).
             emit('sent-request-acknowledge',{ 
                 acknowledge: true,
-                transactionEndTime
+                transactionActivated:true,
+                transactionEndTime,
+                currentTransaction: requestFromUser.currentTransaction
             });
     } catch(e){
         console.log(e);

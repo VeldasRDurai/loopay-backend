@@ -42,6 +42,7 @@ const usersSchema = new mongoose.Schema ({
     currentTransaction : mongoose.ObjectId,
     transactions : [ mongoose.ObjectId ],
 
+    transactionActivated : Boolean,
     transactionEndTime: Date,
 
     location: {

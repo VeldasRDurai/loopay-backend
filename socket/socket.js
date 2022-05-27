@@ -7,6 +7,9 @@ const receiveRequestAccepted = require('./receive-request-accepted');
 const receiveRequestRejected = require('./receive-request-rejected');
 const saveSearch = require('./save-search');
 const saveSearchDelete = require('./save-search-delete');
+const transactionDetails = require('./transaction-details');
+const transactionCancel = require('./transaction-cancel');
+const transactionFound = require('./transaction-found');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -37,5 +40,8 @@ module.exports = io => {
         repitionReducer('update-location', updateLocation);
         repitionReducer('save-search', saveSearch);
         repitionReducer('save-search-delete', saveSearchDelete);
+        repitionReducer('transaction-details', transactionDetails);
+        repitionReducer('transaction-cancel', transactionCancel);
+        repitionReducer('transaction-found', transactionFound);
     });
 }
