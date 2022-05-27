@@ -7,6 +7,8 @@ const {
     // REQUEST_REJECTED
 } = require('../database/requestStateTypes');
 
+const { MAINPAGE_TRANSACTION_MODE } = require('../database/currentModeTypes');
+
 const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
     try{
         console.log('receiveRequestAccepted : ',{ 
@@ -24,7 +26,9 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
             });
             return;
         }
-        const transactionEndTime = new Date() + (currentTransaction.searchDetails.radius * 1000 * 60 *5);
+        console.log('receiveRequestAccepted : ', currentTransaction.searchDetails.radius );
+        const transactionEndTime = new Date( 
+            Number( new Date() ) + Math.floor( currentTransaction.searchDetails.radius/100 * 1000 * 60 *5 ) );
         await transactions.updateOne({'transactionNo':currentTransaction.transactionNo},{
             'requestState' : REQUEST_ACCEPTED,
             'requestStateOn' : new Date(),
@@ -37,6 +41,14 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
         const requestFromUser = await users.findOne({'email':requestFrom})
         // CHEACK IS ONLINE
         // if(requestFromUser.isOnline){}
+        await users.updateOne({'email': requestTo},{
+            'currentMode': MAINPAGE_TRANSACTION_MODE,
+            'transactionEndTime': transactionEndTime
+        });
+        await users.updateOne({'email': requestFrom},{
+            'currentMode': MAINPAGE_TRANSACTION_MODE,
+            'transactionEndTime':transactionEndTime
+        })
         socket.broadcast.to(requestFromUser.socketId).
             emit('sent-request-acknowledge',{ 
                 acknowledge: true,

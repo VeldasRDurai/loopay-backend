@@ -42,7 +42,7 @@ const usersSchema = new mongoose.Schema ({
     currentTransaction : mongoose.ObjectId,
     transactions : [ mongoose.ObjectId ],
 
-    // transactionEndTime: Date,
+    transactionEndTime: Date,
 
     location: {
         type: {

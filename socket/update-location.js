@@ -7,11 +7,11 @@ const updateLocation = async ({
     socket 
 }) => {
     try{
-        console.log('update location : ',{
-            email, 
-            longitude,
-            latitude,
-        })
+        // console.log('update location : ',{
+        //     email, 
+        //     longitude,
+        //     latitude,
+        // })
         const user = await users.findOne({'email': email});
         if( user===null ) return;
 
