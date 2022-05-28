@@ -24,21 +24,24 @@ const updateLocation = async ({
             }
         })
 
-        // const userNext = await users.findOne({
-        //     'email': currentTransaction.requestFrom !== user.email ? 
-        //         currentTransaction.requestFrom : currentTransaction.requestTo
-        // });
-        // socket.emit('transaction-details-acknowledge',{
-        //     acknowledge : true,
-        //     details:  currentTransaction
-        // })
-        // socket.broadcast.to( userNext.socketId )
-        //     .emit('transaction-details-acknowledge',{ 
-        //     acknowledge : true,
-        //     details:  currentTransaction
-        // });
+        const userNext = await users.findOne({
+            'email': currentTransaction.requestFrom !== user.email ? 
+                currentTransaction.requestFrom : currentTransaction.requestTo
+        });
+        socket.emit('transaction-details-acknowledge',{
+            acknowledge : true,
+            details:  currentTransaction
+        });
+        socket.broadcast.to( userNext.socketId )
+            .emit('transaction-details-acknowledge',{ 
+            acknowledge : true,
+            details:  currentTransaction
+        });
 
     } catch(e){
+        socket.emit('transaction-details-acknowledge',{
+            acknowledge : false,
+        });
         console.log(e);
     }
 }
