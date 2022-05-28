@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { TRANSACTION_LIVE_MODE } = require('../database/transactionResultTypes')
 
 const transactionsSchema = new mongoose.Schema ({
     transactionNo : mongoose.ObjectId,
@@ -30,15 +31,22 @@ const transactionsSchema = new mongoose.Schema ({
         coordinates: { type: [Number] }
     },
 
-    requestFromFound : Boolean,
-    requestToFound : Boolean,
+    requestFromFound : { type: Boolean, default: false },
+    requestToFound   : { type: Boolean, default: false },
 
     chat : [{
         sender : String,
         message : String,
         time : Date,
         readed : Boolean
-    }]
+    }],
+
+    transactionResult : { type: String, default: TRANSACTION_LIVE_MODE },
+    transactionCanceledBy : String,
+
+    requestFromFeedback : String,
+    requestToFeedback : String,
+    
 });
 
 module.exports = transactionsSchema ;

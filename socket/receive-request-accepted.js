@@ -28,7 +28,7 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
         }
         
         const transactionEndTime = new Date( 
-            Number( new Date() ) + Math.floor( currentTransaction.searchDetails.radius/100 * 1000 * 60 *5 ) );
+            Number( new Date() ) + Math.floor( currentTransaction.searchDetails.radius/100 * 1000 * 60 ) );
         await transactions.updateOne({'transactionNo':currentTransaction.transactionNo},{
             'requestState' : REQUEST_ACCEPTED,
             'requestStateOn' : new Date(),
@@ -42,7 +42,12 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
         await users.updateOne({'email': requestTo},{
             'currentMode': MAINPAGE_TRANSACTION_MODE,
             'transactionActivated':true,
-            'transactionEndTime': transactionEndTime
+            'transactionEndTime': transactionEndTime,
+
+            'lastSearchSaved' : false,
+            'lastSearchUpto' : undefined,
+            'requestFrom' : undefined,
+            'requestFromUpto' : undefined,
         });
         await users.updateOne({'email': requestFrom},{
             'currentMode': MAINPAGE_TRANSACTION_MODE,
@@ -54,7 +59,12 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
             acknowledge: true,
             transactionActivated:true,
             transactionEndTime,
-            currentTransaction: requestToUser.currentTransaction
+            currentTransaction: requestToUser.currentTransaction,
+
+            lastSearchSaved : false,
+            lastSearchUpto : undefined,
+            requestFrom : undefined,
+            requestFromUpto : undefined,
         });
         socket.broadcast.to(requestFromUser.socketId).
             emit('sent-request-acknowledge',{ 

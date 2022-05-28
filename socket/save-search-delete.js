@@ -15,7 +15,11 @@ const saveSearchDelete = async ({
             'currentMode': MAINPAGE_SEARCH_MODE
         })
         socket.emit('save-search-delete-acknowledge', {
-            acknowledge: true
+            acknowledge: true,
+            lastSearchSaved: false,
+            lastSearchUpto : undefined,
+            requestFrom : undefined,
+            requestFromUpto : undefined,
         });
     } catch(e){
         socket.emit('save-search-delete-acknowledge', {

@@ -1,13 +1,16 @@
 const { users, transactions } = require('../database/database');
 
 const { MAINPAGE_FEEDBACK_MODE } = require('../database/currentModeTypes');
-
+const { TRANSACTION_CANCEL_MODE } = require('../database/transactionResultTypes');
+ 
 const transactionCancel = async (
         { email, currentTransaction, socket }) => {
     try{
         console.log( 'transactionCancel : ', { email, currentTransaction } );
         await transactions.updateOne({'transactionNo':currentTransaction},{
-            'transactionActivated':false
+            'transactionActivated':false,
+            'transactionResult':TRANSACTION_CANCEL_MODE,
+            'transactionCanceledBy': email
         });
         const transaction = await transactions.findOne({ 'transactionNo' : currentTransaction });
         await users.updateOne({ 'email': transaction.requestFrom },{
