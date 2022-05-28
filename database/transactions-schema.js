@@ -37,8 +37,7 @@ const transactionsSchema = new mongoose.Schema ({
     chat : [{
         sender : String,
         message : String,
-        time : Date,
-        readed : Boolean
+        time : Date
     }],
 
     transactionResult : { type: String, default: TRANSACTION_LIVE_MODE },

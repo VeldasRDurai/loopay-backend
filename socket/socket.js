@@ -10,6 +10,7 @@ const saveSearchDelete = require('./save-search-delete');
 const transactionDetails = require('./transaction-details');
 const transactionCancel = require('./transaction-cancel');
 const transactionFound = require('./transaction-found');
+const sentMessage = require('./sent-message');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -43,5 +44,6 @@ module.exports = io => {
         repitionReducer('transaction-details', transactionDetails);
         repitionReducer('transaction-cancel', transactionCancel);
         repitionReducer('transaction-found', transactionFound);
+        repitionReducer('sent-message',sentMessage);
     });
 }
