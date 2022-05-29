@@ -20,6 +20,15 @@ const usersSchema = new mongoose.Schema ({
     
     currentMode : String,
 
+    subscription: {
+        endpoint: String,
+        keys: mongoose.Schema.Types.Mixed,
+        createDate: {
+            type: Date,
+            default: Date.now
+        }
+    },
+
     lastSearch : {
         amount : Number,
         isSoftCash : Boolean,
