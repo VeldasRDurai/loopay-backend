@@ -30,7 +30,7 @@ const sendRequest = async ({
         await users.updateOne({'email': requestTo},{
             "$push": { 'transactions'  : transactionNo },
             'currentTransaction': transactionNo,
-            'currentMode': MAINPAGE_SEARCH_MODE,
+            // 'currentMode': MAINPAGE_SEARCH_MODE,
             'requestFrom': requestFrom,
             'requestFromUpto': requestTimerExpiesOn
         });

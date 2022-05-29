@@ -12,6 +12,7 @@ const addUser = async ({ email, socket }) => {
         console.log( email );
         const user = await users.findOne({ 'email':email });
         if( user === null ){
+            console.log( 'new user' );
             await users({ 
                 'email': email,
                 'isOnline': true,

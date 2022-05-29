@@ -8,28 +8,48 @@ const transactionCancel = async (
     try{
         console.log( 'transactionCancel : ', { email, currentTransaction } );
         await transactions.updateOne({'transactionNo':currentTransaction},{
-            'transactionActivated':false,
-            'transactionResult':TRANSACTION_CANCEL_MODE,
-            'transactionCanceledBy': email
+            "$set" : {
+                'transactionActivated':false,
+                'transactionResult':TRANSACTION_CANCEL_MODE,
+                'transactionCanceledBy': email
+            },
+            "$unset" : {
+                'transactionEndTime': '',
+            }
         });
         const transaction = await transactions.findOne({ 'transactionNo' : currentTransaction });
         await users.updateOne({ 'email': transaction.requestFrom },{
-            currentMode : MAINPAGE_FEEDBACK_MODE,
-            lastSearchSaved : false,
-            lastSearchUpto : undefined,
-            requestFrom : undefined,
-            requestFromUpto : undefined,
-            transactionActivated : false,
-            transactionEndTime: undefined,
+            "$set":{
+                'currentMode' : MAINPAGE_FEEDBACK_MODE,
+                'lastSearchSaved' : false,
+                'transactionActivated' : false,
+            },
+            "$unset":{
+                'lastSearchUpto' : '',
+                'requestFrom' : '' ,
+                'requestFromUpto' :'' ,
+                'transactionEndTime': '',
+            }
         });
         await users.updateOne({ 'email': transaction.requestTo },{
-            currentMode : MAINPAGE_FEEDBACK_MODE,
-            lastSearchSaved : false,
-            lastSearchUpto : undefined,
-            requestFrom : undefined,
-            requestFromUpto : undefined,
-            transactionActivated : false,
-            transactionEndTime: undefined,
+            "$set":{
+                'currentMode' : MAINPAGE_FEEDBACK_MODE,
+                'lastSearchSaved' : false,
+                'transactionActivated' : false,
+            },
+            "$unset":{
+                'lastSearchUpto' : '',
+                'requestFrom' : '' ,
+                'requestFromUpto' :'' ,
+                'transactionEndTime': '',
+            }
+            // currentMode : MAINPAGE_FEEDBACK_MODE,
+            // lastSearchSaved : false,
+            // lastSearchUpto : undefined,
+            // requestFrom : undefined,
+            // requestFromUpto : undefined,
+            // transactionActivated : false,
+            // transactionEndTime: undefined,
         });
 
         const canceledUser = await users.findOne({ 'email': email });

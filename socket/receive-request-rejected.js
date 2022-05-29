@@ -18,6 +18,20 @@ const receiveRequestRejected = async ({ requestTo, requestFrom, socket }) => {
             requestState : REQUEST_REJECTED,
             requestStateOn : new Date()
         });
+        await users.updateOne({'email':requestTo},{
+            // currentTransaction : undefined,
+            // requestFrom : undefined,
+            // requestFromUpto : undefined,
+
+            // currentTransaction : null,
+            // requestFrom : null,
+            // requestFromUpto : null,
+            "$unset" : {
+                currentTransaction : '',
+                requestFrom : '',
+                requestFromUpto : '',
+            }
+        })
 
         // CHEACK IS ONLINE 
         const requestFromUser = await users.findOne({'email':requestFrom})

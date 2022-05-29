@@ -10,9 +10,13 @@ const saveSearchDelete = async ({
             email
         });
         await users.updateOne({'email':email},{
-            'lastSearchSaved' : false,
-            'lastSearchUpto' : undefined,
-            'currentMode': MAINPAGE_SEARCH_MODE
+            "$set":{
+                'currentMode': MAINPAGE_SEARCH_MODE,
+                'lastSearchSaved' : false,
+            },
+            "$unset":{
+                'lastSearchUpto' : '',      
+            }
         })
         socket.emit('save-search-delete-acknowledge', {
             acknowledge: true,
