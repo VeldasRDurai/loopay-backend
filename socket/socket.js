@@ -14,6 +14,7 @@ const sentMessage = require('./sent-message');
 const transactionTimerExpire = require('./transaction-timer-expired');
 const feedbackSubmit = require('./feedback-submit');
 const saveSubscription = require('./save-subscription');
+const transactionHistory = require('./trasnsaction-history');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -39,5 +40,6 @@ module.exports = io => {
         repitionReducer('transaction-timer-expired',transactionTimerExpire);
         repitionReducer('feedback-submit',feedbackSubmit);
         repitionReducer('save-subscription',saveSubscription);
+        repitionReducer('transaction-history', transactionHistory);
     });
 }

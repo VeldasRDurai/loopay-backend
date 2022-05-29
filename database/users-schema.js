@@ -54,6 +54,16 @@ const usersSchema = new mongoose.Schema ({
     transactionActivated : Boolean,
     transactionEndTime: Date,
 
+    notifications : [{
+        sender: String,
+        message : String,
+        readed : Boolean,
+        time : {
+            type: Date,
+            default: Date.now
+        }
+    }],
+
     location: {
         type: {
             type: String,
