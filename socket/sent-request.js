@@ -3,7 +3,7 @@ const { users, transactions } = require('../database/database');
 const { REQUEST_SEND } = require('../database/requestStateTypes');
 const { MAINPAGE_SEARCH_MODE } = require('../database/currentModeTypes');
 
-const { pushNotification } = require('../functions/pushNotification');
+// const { pushNotification } = require('../functions/pushNotification');
 
 const sendRequest = async ({ 
     requestFrom, 
@@ -49,13 +49,13 @@ const sendRequest = async ({
             requestStateOn : requestTimerStartsOn
         }).save();
         
-        const payload = {
-            title: `Request from ${ requestFrom }`,
-            message: `You have a request from ${requestFrom} expires on ${requestTimerExpiesOn}`,
-            url: process.env.FRONTEND_DEVELOPMENT_URL,
-            ttl: 36000,
-        };
-        pushNotification({ email:requestTo, payload });
+        // const payload = {
+        //     title: `Request from ${ requestFrom }`,
+        //     message: `You have a request from ${requestFrom} expires on ${requestTimerExpiesOn}`,
+        //     url: process.env.FRONTEND_DEVELOPMENT_URL,
+        //     ttl: 36000,
+        // };
+        // pushNotification({ email:requestTo, payload });
     
     } catch(e){
         console.log(e);
