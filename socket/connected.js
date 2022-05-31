@@ -1,4 +1,4 @@
-const { users } = require('../database/database');
+const { users, transactions } = require('../database/database');
 const {
     MAINPAGE_SEARCH_MODE,
     // MAINPAGE_SAVED_MODE,
@@ -7,7 +7,7 @@ const {
     // MAINPAGE_FEEDBACK_MODE,
 } = require('../database/currentModeTypes');
 
-const addUser = async ({ email, socket }) => {
+const connected = async ({ email, socket }) => {
     try{
         console.log( email );
         const user = await users.findOne({ 'email':email });
@@ -30,6 +30,20 @@ const addUser = async ({ email, socket }) => {
             acknowledge:true,
             user :updatedUser
         });
+        if(new Date(updatedUser.transactionEndTime) < new Date() || !updatedUser.transactionActivated ) return;
+        
+        const transaction = await transactions.findOne({'transactionNo': updatedUser.currentTransaction});
+
+        const userNext = await users.findOne({
+            'email': transaction.requestFrom !== updatedUser.email ? 
+                transaction.requestFrom : transaction.requestTo
+        });
+        if( userNext.isOnline ){
+            socket.broadcast.to( userNext.socketId )
+                .emit('partner-connected',{});
+        } else {
+            // push
+        }
     } catch(e){
         socket.emit('add-user-acknowledge',{ 
             acknowledge:false
@@ -38,4 +52,4 @@ const addUser = async ({ email, socket }) => {
     }
 }
 
-module.exports = addUser;
+module.exports = connected;

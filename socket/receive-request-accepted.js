@@ -28,7 +28,7 @@ const receiveRequestAccepted = async ({ requestTo, requestFrom, socket }) => {
         }
         
         const transactionEndTime = new Date( 
-            Number( new Date() ) + Math.floor( currentTransaction.searchDetails.radius/100 * 1000 * 60 ) );
+            Number( new Date() ) + Math.floor( currentTransaction.searchDetails.radius/100 * 1000 * 5 *  60 ) );
         await transactions.updateOne({'transactionNo':currentTransaction.transactionNo},{
             'requestState' : REQUEST_ACCEPTED,
             'requestStateOn' : new Date(),

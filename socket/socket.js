@@ -1,6 +1,6 @@
 const transactionSearch = require('./transcation-search');
 const updateLocation = require('./update-location');
-const addUser = require('./add-user');
+const connected = require('./connected');
 const sentRequest = require('./sent-request');
 const cancelRequest = require('./cancel-request');
 const receiveRequestAccepted = require('./receive-request-accepted');
@@ -15,6 +15,7 @@ const transactionTimerExpire = require('./transaction-timer-expired');
 const feedbackSubmit = require('./feedback-submit');
 const saveSubscription = require('./save-subscription');
 const transactionHistory = require('./trasnsaction-history');
+const disconnect = require('./disconnect');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -24,7 +25,7 @@ module.exports = io => {
             socket.on(event, data => funct({ ...data, socket }))
 
         socket.emit('connected');
-        repitionReducer('add-user', addUser);
+        repitionReducer('connected', connected);
         repitionReducer('cancel-request',cancelRequest);
         repitionReducer('receive-request-accepted',receiveRequestAccepted);
         repitionReducer('receive-request-rejected',receiveRequestRejected);
@@ -41,5 +42,6 @@ module.exports = io => {
         repitionReducer('feedback-submit',feedbackSubmit);
         repitionReducer('save-subscription',saveSubscription);
         repitionReducer('transaction-history', transactionHistory);
+        repitionReducer('disconnect', disconnect);
     });
 }

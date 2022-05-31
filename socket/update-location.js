@@ -32,11 +32,14 @@ const updateLocation = async ({
             acknowledge : true,
             details:  currentTransaction
         });
-        socket.broadcast.to( userNext.socketId )
-            .emit('transaction-details-acknowledge',{ 
-            acknowledge : true,
-            details:  currentTransaction
-        });
+        
+        if( userNext.isOnline ){
+            socket.broadcast.to( userNext.socketId )
+                .emit('transaction-details-acknowledge',{ 
+                acknowledge : true,
+                details:  currentTransaction
+            });
+        }
 
     } catch(e){
         socket.emit('transaction-details-acknowledge',{
