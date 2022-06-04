@@ -12,6 +12,10 @@ module.exports = () => {
 	const forgotRoute = require('./forgot/forgot');
 	router.use('/forgot', forgotRoute());
 
+
+	const logoutRoute = require('./logout/logout');
+	router.use('/logout', logoutRoute());
+
 	const searchRoute = require('./search/search');
 	router.use('/search', searchRoute());
 

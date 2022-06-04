@@ -4,7 +4,7 @@ const bcrypt  = require('bcryptjs');
 
 const { users } = require('../../database/database');
 const { nMinutesLater } = require('../../functions/nTimeLater');
-// const userVerificationMail = require('../../functions/mail/userVerificationMail');
+const userVerificationMail = require('../../functions/mail/userVerificationMail');
 
 const signupPost = async ( req, res, next ) => {
     try{
@@ -24,16 +24,15 @@ const signupPost = async ( req, res, next ) => {
         // 2.
         // Sending verification code to given mail id and
         // May of may not able to send error
-        // const verificationCode  = Math.floor( (Math.random() * 999999) + 1 );
-        // if( !await userVerificationMail({email,verificationCode}) ){
-            // res.status(500).json({
-            //     errorNo : 2,
-            //     errorMessage : 'Not able to send email'
-            // });
-        //     return;
-        // }
+        const verificationCode  = Math.floor( (Math.random() * 999999) + 1 );
+        if( !await userVerificationMail({email,verificationCode}) ){
+            res.status(500).json({
+                errorNo : 2,
+                errorMessage : 'Not able to send email'
+            });
+            return;
+        }
 
-        const verificationCode = 123456;
 
         // 3.
         // Hashing Password and Verification code

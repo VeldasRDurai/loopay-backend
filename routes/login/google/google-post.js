@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+const verify = require('../../../functions/googleVerification');
 const { users } = require('../../../database/database');
 const { 
     accessTokenGenerator, 
@@ -37,9 +38,7 @@ const googlePost = async ( req, res, next ) => {
             path:"/",  
             httpOnly:true 
         });
-        res.status(200).json({
-            gotPersonalDetails: user.gotPersonalDetails
-        });
+        res.status(200).send("SUCCESS");
         return;
     } catch(e){
         console.log(e);

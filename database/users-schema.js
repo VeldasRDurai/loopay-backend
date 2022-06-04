@@ -2,18 +2,19 @@ const mongoose = require("mongoose");
 
 const usersSchema = new mongoose.Schema ({
     email : String,
-    // username  : String,
-    // name : String,
-    // hashedPassword  : String,
+    username  : String,
+    name : String,
+    hashedPassword  : String,
     
-    // verifiedUser : Boolean,
-    // hashedVerificationCode : String,
-    // verificationCodeExpiryDate : Date,
+    verifiedUser : Boolean,
+    hashedVerificationCode : String,
+    verificationCodeExpiryDate : Date,
 
-    // refreshToken : String,
+    refreshToken : String,
 
-    // googleAccount : Boolean,
-    // gotPersonalDetails : Boolean,
+    googleAccount : Boolean,
+    gotPersonalDetails : Boolean,
+    
     isOnline : Boolean,
     socketId : String,
     lastseen : Date,
@@ -23,10 +24,7 @@ const usersSchema = new mongoose.Schema ({
     subscription: {
         endpoint: String,
         keys: mongoose.Schema.Types.Mixed,
-        createDate: {
-            type: Date,
-            default: Date.now
-        }
+        createDate: Date
     },
 
     lastSearch : {
@@ -51,13 +49,16 @@ const usersSchema = new mongoose.Schema ({
     currentTransaction : mongoose.ObjectId,
     transactions : [ mongoose.ObjectId ],
 
-    transactionActivated : Boolean,
+    transactionActivated : { type:Boolean, default: false },
     transactionEndTime: Date,
 
     notifications : [{
         sender: String,
         message : String,
-        readed : Boolean,
+        readed : {
+            type: Boolean,
+            default : false
+        },
         time : {
             type: Date,
             default: Date.now

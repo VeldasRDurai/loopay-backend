@@ -12,8 +12,9 @@ const updateLocation = async ({
             "$set" : { 
                 'location.coordinates': [ longitude, latitude, ] }
         });
-        const user = await users.findOne({'email': email}); 
-        if(new Date(user.transactionEndTime) < new Date() || !user.transactionActivated ) return;
+        const user = await users.findOne({'email': email});
+
+        if( !user.transactionActivated || new Date(user.transactionEndTime) < new Date() ) return;
         
         const currentTransaction = await transactions.findOne({'transactionNo': user.currentTransaction});
         await transactions.updateOne({'transactionNo': currentTransaction.transactionNo},{

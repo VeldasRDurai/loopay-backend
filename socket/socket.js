@@ -16,6 +16,7 @@ const feedbackSubmit = require('./feedback-submit');
 const saveSubscription = require('./save-subscription');
 const transactionHistory = require('./trasnsaction-history');
 const disconnect = require('./disconnect');
+// const watchedNotifications = require('./watched-notifictions');
 
 module.exports = io => {
     io.on('connection' , socket => {
@@ -43,5 +44,6 @@ module.exports = io => {
         repitionReducer('save-subscription',saveSubscription);
         repitionReducer('transaction-history', transactionHistory);
         repitionReducer('disconnect', disconnect);
+        // repitionReducer('watched-notifictions', watchedNotifications);
     });
 }
