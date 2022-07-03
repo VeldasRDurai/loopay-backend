@@ -4,11 +4,11 @@ const transactionSearch = async (
         { amount, isSoftCash, radius, email, socket }) => {
 
     try{
-        console.log( 'transaction-search = ', { amount, isSoftCash, radius, email } );
+        console.log( 'transaction-search = ', { amount, isSoftCashN: isSoftCash, isSoftCash:Boolean(isSoftCash), radius, email } );
         // 1
         await users.updateOne({'email':email},{
-            "$set":  { 'lastSearch': { amount, isSoftCash, radius } },
-            "$push": { 'searches'  : { amount, isSoftCash, radius } }
+            "$set":  { 'lastSearch': { amount, isSoftCash: Boolean(Number(isSoftCash)), radius } },
+            "$push": { 'searches'  : { amount, isSoftCash: Boolean(Number(isSoftCash)), radius } }
         })
 
 
@@ -22,16 +22,16 @@ const transactionSearch = async (
         const user = await users.findOne({'email':email});
         const lastSearchResults = await users.find({
             'email' : { $ne : email },
-            'location.coordinates' : {
-                $geoWithin: { $center: [ user.location.coordinates , radius ] } 
-            },
+            // 'location.coordinates' : {
+            //     $geoWithin: { $center: [ user.location.coordinates , radius ] } 
+            // },
             'lastSearchSaved':true,
-            'lastSearchUpto' : { $gt : new Date()  },
+            // 'lastSearchUpto' : { $gt : new Date()  },
             'lastSearch.amount': { $gte : amount },
-            'lastSearch.isSoftCash': !isSoftCash
+            'lastSearch.isSoftCash': !Boolean(Number(isSoftCash))
         });
 
-        // console.log('lastSearchResults : ', lastSearchResults);
+        console.log('lastSearchResults : ', lastSearchResults);
         // const user2 = await users.find();
         // // console.log('transaction-search-result = ' , user2 );
         socket.emit('transaction-search-result' , { lastSearchResults });
